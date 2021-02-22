@@ -1,0 +1,292 @@
+<?xml version="1.1" encoding="UTF-8" standalone="no"?>
+<databaseChangeLog 
+	xmlns="http://www.liquibase.org/xml/ns/dbchangelog" 
+	xmlns:ext="http://www.liquibase.org/xml/ns/dbchangelog-ext" 
+	xmlns:pro="http://www.liquibase.org/xml/ns/pro" 
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+	xsi:schemaLocation="http://www.liquibase.org/xml/ns/dbchangelog-ext http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-ext.xsd http://www.liquibase.org/xml/ns/pro http://www.liquibase.org/xml/ns/pro/liquibase-pro-4.1.xsd http://www.liquibase.org/xml/ns/dbchangelog http://www.liquibase.org/xml/ns/dbchangelog/dbchangelog-4.1.xsd" changeLogId="3ee19d7a-dbc1-4ab0-81b3-ee5404a2d472">
+
+	<changeSet id="disable-keys" author="mdojic" runAlways="true">
+	    <sql>SET FOREIGN_KEY_CHECKS=0;</sql>
+	</changeSet>
+	
+	<!-- Role -->
+	<changeSet id="role" author="mdojic">
+		<createTable tableName="roles">
+			
+			<column name="role_id" autoIncrement="true" type="INT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="role_pkey"/>			
+			</column>
+			
+			<column name="role" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="insert_roles" author="mdojic">
+		<insert tableName="roles">
+			<column name="role" value="ROLE_ADMIN"/>
+		</insert>
+		<insert tableName="roles">
+			<column name="role" value="ROLE_USER"/>
+		</insert>
+	</changeSet>
+
+	<!-- User -->
+	<changeSet id="user" author="mdojic">
+		<createTable tableName="users">
+			
+			<column name="user_id" autoIncrement="true" type="INT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="user_pkey"/>			
+			</column>
+			
+			<column name="username" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+			<column name="password" type="VARCHAR(255)">
+				<constraints nullable="false"/>
+			</column>
+				
+		</createTable>
+	</changeSet>
+
+	<changeSet id="insert_users" author="mdojic">
+		<insert tableName="users">
+			<column name="username" value="admin"/>
+			<!-- PASSWORD: admin -->
+			<column name="password" value="$2a$10$mQSi3VgdKoOoQ715O.LGGeieTI5IOJuNBxPgK6bi4vf8CTZ0Mf69W"/>
+		</insert>
+		
+		<insert tableName="users">
+			<column name="username" value="user"/>
+			<!-- PASSWORD: user -->
+			<column name="password" value="$2a$10$lKQrCltOIC9y5wavUM4H7.epwrygwENhFs2Geq.GTq889gaABy79e"/>
+		</insert>
+	</changeSet>
+
+	<!-- UserRole -->
+	<changeSet id="user_role" author="mdojic">
+		<createTable tableName="user_role">
+			
+			<column name="id" autoIncrement="true" type="INT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="igrac_pkey"/>			
+			</column>
+			
+			<column name="user_id" type="INT">
+				<constraints nullable="false" foreignKeyName="fk_user_role_user" references="users(user_id)"/>
+			</column>
+			<column name="role_id" type="INT">
+				<constraints nullable="false" foreignKeyName="fk_user_role_role" references="roles(role_id)"/>
+			</column>
+				
+		</createTable>
+	</changeSet>
+
+	<changeSet id="insert_user_roles" author="mdojic">
+		<insert tableName="user_role">
+			<column name="user_id" value="1"/>
+			<column name="role_id" value="1"/>
+		</insert>
+		
+		<insert tableName="user_role">
+			<column name="user_id" value="2"/>
+			<column name="role_id" value="2"/>
+		</insert>
+	</changeSet>
+	
+	<!-- Igrac -->
+	<changeSet author="mdojic" id="igrac">
+		<createTable tableName="igrac">
+
+			<column name="id" autoIncrement="true" type="INT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="igrac_pkey"/>			
+			</column>
+			
+			<column name="ime" type="VARCHAR(255)"/>
+			<column name="prezime" type="VARCHAR(255)"/>
+			<column name="username" type="VARCHAR(255)"/>
+			<column name="jmbg" type="VARCHAR(255)"/>
+			<column name="datum_rodjenja" type="DATE"/>
+			<column name="pozicija" type="ENUM('CB', 'CMF', 'LB', 'CF')"/>
+
+			<column name="mesto_id" type="INT">
+				<constraints nullable="false" foreignKeyName="fk_igrac_mesto" references="mesto(id)"/>
+			</column>
+			<column name="klub_id" type="INT">
+				<constraints nullable="false" foreignKeyName="fk_igrac_klub" references="klub(id)"/>
+			</column>
+				
+		</createTable>
+	</changeSet>
+
+	<changeSet id="insert_igrac" author="mdojic">
+		<insert tableName="igrac">
+			<column name="ime" value="Milan"/>
+			<column name="prezime" value="Dojic"/>
+			<column name="username" value="user"/>
+			<column name="jmbg" value="1301993111222"/>
+			<column name="datum_rodjenja" value="1993-01-13"/>
+			<column name="pozicija" value="CB"/>
+			<column name="mesto_id" value="1"/>
+			<column name="klub_id" value="1"/>
+		</insert>
+	</changeSet>
+	
+	<changeSet author="mdojic" id="igrac_slika">
+		<createTable tableName="igrac_slika">
+		
+			<column name="igrac_id" autoIncrement="false" type="INT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="igrac_slika_pkey"/>			
+			</column>
+		
+			<column name="slika" type="BLOB"/>
+		
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="insert_igrac_slika" author="mdojic">
+		<insert tableName="igrac_slika">
+			<column name="igrac_id" value="1"/>
+			<column name="slika" value="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"/>
+		</insert>
+	</changeSet>
+	
+	<!-- Mesto -->
+	<changeSet author="mdojic" id="mesto">
+		<createTable tableName="mesto">
+		
+			<column name="id" autoIncrement="true" type="INT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="mesto_pkey"/>			
+			</column>
+		
+			<column name="naziv" type="VARCHAR(255)"/>
+			<column name="ptt" type="INT"/>
+		
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="insert_mesto" author="mdojic">
+		<insert tableName="mesto">
+			<column name="naziv" value="Novi Sad"/>
+			<column name="ptt" value="21000"/>
+		</insert>
+		<insert tableName="mesto">
+			<column name="naziv" value="Sombor"/>
+			<column name="ptt" value="25000"/>
+		</insert>
+	</changeSet>
+	
+	<!-- Utakmica -->
+	<changeSet author="mdojic" id="utakmica">
+		<createTable tableName="utakmica">
+		
+			<column name="id" autoIncrement="true" type="INT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="utakmica_pkey"/>			
+			</column>
+		
+			<column name="datum_odigravanja" type="DATE"/>
+			
+			<column name="takmicenje_id" type="INT">
+				<constraints nullable="false" foreignKeyName="fk_utakmica_takmicenje" references="takmicenje(id)"/>
+			</column>
+			<column name="klub_domacin_id" type="INT">
+				<constraints nullable="false" foreignKeyName="fk_utakmica_klub_domacin" references="klub(id)"/>
+			</column>
+			<column name="klub_gost_id" type="INT">
+				<constraints nullable="false" foreignKeyName="fk_utakmica_klub_gost" references="klub(id)"/>
+			</column>
+		
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="insert_utakmica" author="mdojic">
+		<insert tableName="utakmica">
+			<column name="datum_odigravanja" value="2020-02-02"/>
+			<column name="takmicenje_id" value="1"/>
+			<column name="klub_domacin_id" value="2"/>
+			<column name="klub_gost_id" value="1"/>
+		</insert>
+	</changeSet>
+	
+	<!-- Klub -->
+	<changeSet author="mdojic" id="klub">
+		<createTable tableName="klub">
+		
+			<column name="id" autoIncrement="true" type="INT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="klub_pkey"/>			
+			</column>
+		
+			<column name="naziv" type="VARCHAR(255)"/>
+		
+			<column name="mesto_id" type="INT">
+				<constraints nullable="false" foreignKeyName="fk_klub_mesto" references="mesto(id)"/>
+			</column>
+		
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="insert_klub" author="mdojic">
+		<insert tableName="klub">
+			<column name="naziv" value="FK Radnicki Sombor"/>
+			<column name="mesto_id" value="2"/>
+		</insert>
+		<insert tableName="klub">
+			<column name="naziv" value="FK Vojvodina"/>
+			<column name="mesto_id" value="1"/>
+		</insert>
+	</changeSet>
+	
+	<!-- Takmicenje -->
+	<changeSet author="mdojic" id="takmicenje">
+		<createTable tableName="takmicenje">
+		
+			<column name="id" autoIncrement="true" type="INT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="takmicenje_pkey"/>			
+			</column>
+		
+			<column name="naziv" type="VARCHAR(255)"/>
+		
+		</createTable>
+	</changeSet>
+	
+	<changeSet id="insert_takmicenje" author="mdojic">
+		<insert tableName="takmicenje">
+			<column name="naziv" value="Srpska liga Vojvodina"/>
+		</insert>
+		<insert tableName="takmicenje">
+			<column name="naziv" value="Kup Srbije"/>
+		</insert>
+	</changeSet>
+	
+	<!-- Nastup igraca na utakmici -->
+	<changeSet author="mdojic" id="nastup">
+		<createTable tableName="igrac_utakmica_nastup">
+		
+			<column name="id" autoIncrement="true" type="INT">
+				<constraints nullable="false" primaryKey="true" primaryKeyName="nastup_pkey"/>			
+		
+			</column>
+		
+			<column name="ocena_igraca" type="FLOAT"/>
+
+			<column name="igrac_id" type="INT">
+				<constraints nullable="false" foreignKeyName="fk_nastup_igrac" references="igrac(id)"/>
+			</column>
+			<column name="utakmica_id" type="INT">
+				<constraints nullable="false" foreignKeyName="fk_nastup_utakmica" references="utakmica(id)"/>
+			</column>
+		
+		</createTable>
+	</changeSet>
+
+	<changeSet id="insert_nastup" author="mdojic">
+		<insert tableName="igrac_utakmica_nastup">
+			<column name="ocena_igraca" value="9.82"/>
+			<column name="igrac_id" value="1"/>
+			<column name="utakmica_id" value="1"/>
+		</insert>
+	</changeSet>
+
+</databaseChangeLog>

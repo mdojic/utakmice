@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>Admin homepage</title>
+</head>
+<body>
+
+	You're an admin. You can do anything!
+
+	<form action="/logout" method=post>
+	    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	    <input type="submit" value="logout">
+	</form>
+	
+</body>
+</html>

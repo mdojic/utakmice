@@ -1,0 +1,137 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>org.springframework.boot</groupId>
+		<artifactId>spring-boot-starter-parent</artifactId>
+		<version>2.4.3</version>
+		<relativePath/>
+	</parent>
+	
+	<groupId>com.mdojic</groupId>
+	<artifactId>fsdtest</artifactId>
+	<version>0.0.1-SNAPSHOT</version>
+	<name>fsdtest</name>
+	<description>FSD test assignment</description>
+	
+	<properties>
+		<java.version>8</java.version>
+		<maven-jar-plugin.version>3.1.1</maven-jar-plugin.version>
+	</properties>
+
+	
+	<dependencies>
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-web</artifactId>
+		</dependency>
+		
+		 <dependency>
+	        <groupId>org.springframework.boot</groupId>
+	        <artifactId>spring-boot-starter-security</artifactId>
+	    </dependency>
+		
+		<dependency>
+			<groupId>org.liquibase</groupId>
+			<artifactId>liquibase-core</artifactId>
+		</dependency>
+		
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-test</artifactId>
+			<scope>test</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-data-jpa</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework</groupId>
+		    <artifactId>spring-web</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.springframework.boot</groupId>
+		    <artifactId>spring-boot-starter-thymeleaf</artifactId>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.projectlombok</groupId>
+		    <artifactId>lombok</artifactId>
+		    <scope>provided</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>mysql</groupId>
+		    <artifactId>mysql-connector-java</artifactId>
+		    <version>8.0.22</version>
+		</dependency>
+				
+				
+	</dependencies>
+
+	<build>
+		<pluginManagement>
+			<plugins>
+				<plugin>
+					<groupId>org.springframework.boot</groupId>
+					<artifactId>spring-boot-maven-plugin</artifactId>
+				</plugin>
+				
+				<plugin>
+					 <groupId>org.liquibase</groupId>
+				     <artifactId>liquibase-maven-plugin</artifactId>
+				     <version>4.2.0</version>
+					
+					<configuration>
+						<changeLogFile>/src/main/resources/db/changelog/changelog.xml</changeLogFile>
+						<outputChangeLogFile>output_changelog.xml</outputChangeLogFile>
+						<url>jdbc:mysql://localhost:3306/fsd</url>
+						<username>mdojic</username>
+						<password>mdojic</password>
+					</configuration>
+				
+					<dependencies>
+						<dependency>
+							<groupId>mysql</groupId>
+							<artifactId>mysql-connector-java</artifactId>
+						    <version>8.0.22</version>
+							<scope>runtime</scope>
+						</dependency>
+					</dependencies>
+				</plugin>
+				
+				<plugin>
+					<groupId>com.cmeza</groupId>
+					<artifactId>spring-data-generator</artifactId>
+					<version>1.1.8</version>
+					<configuration>
+						<entity-package>
+						    <param>com.mdojic.fsdtest.repository.entity</param>
+						</entity-package>
+						<repository-package>com.mdojic.fsdtest.repository</repository-package>
+						<repository-postfix>Repository</repository-postfix>
+						<manager-package>com.mdojic.fsdtest.managers</manager-package>
+						<manager-postfix>Manager</manager-postfix>
+						<only-annotations>false</only-annotations>
+						<overwrite>false</overwrite>
+						<additional-extends>
+		                    <param>org.springframework.data.querydsl.QuerydslPredicateExecutor</param>
+		                </additional-extends>
+					</configuration>
+				</plugin>
+				
+			</plugins>
+			
+		</pluginManagement>
+	</build>
+
+</project>

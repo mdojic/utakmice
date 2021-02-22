@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="UTF-8">
+<title>User homepage</title>
+</head>
+<body>
+
+	You're a user, not much you can do.
+
+	<form action="/logout" method=post>
+	    <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"/>
+	    <input type="submit" value="logout">
+	</form>
+
+</body>
+</html>

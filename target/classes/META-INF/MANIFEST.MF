@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Implementation-Title: fsdtest
+Implementation-Version: 0.0.1-SNAPSHOT
+Built-By: mdojic
+Implementation-Vendor-Id: com.mdojic
+Build-Jdk: 1.8.0_282
+Implementation-URL: https://spring.io/projects/spring-boot/fsdtest
+Created-By: Maven Integration for Eclipse
+
